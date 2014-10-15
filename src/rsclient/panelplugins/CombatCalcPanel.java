@@ -39,6 +39,7 @@ public class CombatCalcPanel extends JPanel {
 		magicLevelField = new JTextField();
 		prayerLevelField = new JTextField();
 		hitpointsLevelField = new JTextField();
+		hitpointsLevelField.setText("test");
 
 		this.add(attackLevelField, "width 15%, height 15%, cell 0 0");
 		this.add(rangedLevelField, "width 15%, height 15%, cell 1 0");
