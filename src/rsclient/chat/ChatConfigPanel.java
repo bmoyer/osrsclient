@@ -63,7 +63,7 @@ public class ChatConfigPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ArrayList<String> joinChannels = Parse.parseIrcChannels(chanField.getText());
-				//mainIrcPanel.addMainPanel();
+				mainIrcPanel.addMainPanel();
 				for (String s : joinChannels) {
 					mainIrcPanel.chatMainPanel.addChanPanel(s);
 
