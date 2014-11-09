@@ -7,8 +7,8 @@ Building
 ============================
 osrsclient can be easily built using the Apache Ant build script included in the repository.
 
- git clone git@github.com:bmoyer/osrsclient.git
- ant -f osrsclient -Dnb.internal.action.name=rebuild clean jar 
+    git clone http://github.com/bmoyer/osrsclient
+    ant -f osrsclient -Dnb.internal.action.name=rebuild clean jar 
 
 
 Running
