@@ -20,6 +20,6 @@ public class BasePluginPanel extends JPanel {
 	public BasePluginPanel(){
 		
 		super(new MigLayout());
-		this.add(new CombatCalcPanel(), "height 20%, width 100%");
+		this.add(new CombatCalcPanel(), "height 25%, width 100%");
 	}
 }

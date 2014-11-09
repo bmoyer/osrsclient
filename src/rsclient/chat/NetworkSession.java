@@ -5,17 +5,24 @@
  */
 package rsclient.chat;
 
+import com.google.common.collect.ImmutableSortedSet;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import logic.IrcManager;
+import logic.Parse;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.WaitForQueue;
 import org.pircbotx.hooks.events.ConnectEvent;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.events.UserListEvent;
 
 /**
  *
@@ -26,8 +33,6 @@ public class NetworkSession extends ListenerAdapter<PircBotX> {
 	private final PircBotX bot;
 	private final IrcManager manager;
 
-	
-	
 	public NetworkSession(String nick, ArrayList<String> chanNames, IrcManager mgr) {
 		Configuration.Builder<PircBotX> builder = new Configuration.Builder<>().
 			setName(nick).
@@ -41,7 +46,7 @@ public class NetworkSession extends ListenerAdapter<PircBotX> {
 		}
 		manager = mgr;
 		bot = new PircBotX(builder.buildConfiguration());
-		
+
 	}
 
 	public void startSession() throws IOException, IrcException {
@@ -68,10 +73,42 @@ public class NetworkSession extends ListenerAdapter<PircBotX> {
 
 	@Override
 	public void onJoin(JoinEvent<PircBotX> event) throws Exception {
-		manager.onJoinEvent(event.getChannel().getUsers().toArray());
 
+		Runnable r1 = new Runnable() {
+			public void run() {
+				WaitForQueue queue = new WaitForQueue(bot);
+				UserListEvent currentEvent = null;
+				try {
+					currentEvent = queue.waitFor(UserListEvent.class);
+				} catch (InterruptedException ex) {
+					Logger.getLogger(NetworkSession.class.getName()).log(Level.SEVERE, null, ex);
+				}
+				manager.onJoinEvent(currentEvent.getChannel().getUsers().toArray());
+			}
+		};
+
+		if (!event.getUser().getNick().equalsIgnoreCase(bot.getNick())) {
+			//System.out.println("someone else joined the channel");
+		} else {
+			//System.out.println("you joined the channel");
+			new Thread(r1).start();
+		}
+
+//		Runnable r1 = new Runnable() {
+//			public void run() {
+//				WaitForQueue queue = new WaitForQueue(bot);
+//				UserListEvent currentEvent = null;
+//				try {
+//					currentEvent = queue.waitFor(UserListEvent.class);
+//				} catch (InterruptedException ex) {
+//					Logger.getLogger(NetworkSession.class.getName()).log(Level.SEVERE, null, ex);
+//				}
+//				manager.onJoinEvent(currentEvent.getChannel().getUsers().toArray());
+//			}
+//		};
+//
+//		new Thread(r1).start();
 	}
-	
 
 	public void joinChannel(String chanName) {
 		bot.sendIRC().joinChannel(chanName);
@@ -80,6 +117,7 @@ public class NetworkSession extends ListenerAdapter<PircBotX> {
 	public void sendMessage(String chanName, String message) {
 		bot.sendIRC().message(chanName, message);
 		manager.messageReceived(chanName, message, bot.getNick());
+
 	}
 
 	@Override

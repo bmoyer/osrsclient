@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.miginfocom.swing.MigLayout;
 import org.pircbotx.exception.IrcException;
 import rsclient.toolbar.MainToolBar;
@@ -50,6 +51,7 @@ public class RSClient {
 
 	public static void initUI() {
 		JFrame mainwnd = new JFrame("Luna - Open source OSRS Client");
+		mainwnd.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		Image icon = Toolkit.getDefaultToolkit().getImage("resources/lunaicon.png");
 		mainwnd.setIconImage(icon);
 		
@@ -113,11 +115,14 @@ public class RSClient {
 				gamepanel.remove(l);
 				loader.applet.resize(765, 503);
 				reflector = loader.loader;
+				
 
 			} catch (IllegalArgumentException ex) {
 				Logger.getLogger(RSClient.class.getName()).log(Level.SEVERE, null, ex);
 
 			}
+			
+			
 
 		}
 

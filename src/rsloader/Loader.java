@@ -36,7 +36,7 @@ public class Loader implements AppletStub{
 	{
 		game = g;
 		if(game == Game.OSRS)
-			gameUrl = "http://oldschool69.runescape.com/";
+			gameUrl = "http://oldschool42.runescape.com/";
 		else if(game == Game.RS3)
 			gameUrl = "http://world1.runescape.com/";
 		else

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.pircbotx.User;
 import org.pircbotx.exception.IrcException;
 import rsclient.chat.ChatConfigPanel;
 import rsclient.chat.ChatMainPane;
@@ -60,6 +61,9 @@ public class IrcManager {
     public void onJoinEvent(Object[] users) {
         for (Object o : users) {
             System.out.println();
+	    User u = (User) o;
+	    System.out.println(u.getNick() + "PRESENT");
+	    
         }
     }
 
