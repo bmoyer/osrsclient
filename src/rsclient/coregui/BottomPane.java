@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import rsclient.chat.IrcPanel;
+import rsclient.panelplugins.BasePluginPanel;
 
 /**
  *

@@ -7,7 +7,10 @@ package rsclient.panelplugins;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,9 +18,11 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
+import org.pushingpixels.trident.Timeline;
 import rsclient.coregui.LengthRestrictedDocument;
 
 /**
@@ -37,21 +42,34 @@ public class CombatCalcPanel extends JPanel {
 	//This calculator should remain fairly resistant to panel size variations. 
 	public CombatCalcPanel() {
 		setup();
+		setupAnimation();
 	}
 
 	public void setup() {
 		setLayout(new MigLayout("ins 5, left "));
 		this.setBackground(new Color(52, 52, 52));
-		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-
+		Border loweredbevel = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
+		this.setBorder(loweredbevel);
+		
 		attackLevelField = new JTextField();
+		attackLevelField.setBorder(loweredbevel);
 		strengthLevelField = new JTextField();
+		strengthLevelField.setBorder(loweredbevel);
 		defenseLevelField = new JTextField();
+		defenseLevelField.setBorder(loweredbevel);
 		rangedLevelField = new JTextField();
+		rangedLevelField.setBorder(loweredbevel);
 		magicLevelField = new JTextField();
+		magicLevelField.setBorder(loweredbevel);
 		prayerLevelField = new JTextField();
+		prayerLevelField.setBorder(loweredbevel);
 		hitpointsLevelField = new JTextField();
-		calcButton = new JButton("CALC");
+		hitpointsLevelField.setBorder(loweredbevel);
+		calcButton = new JButton("Calculate");
+		
+		
+		
+		
 
 		attackLevelField.setDocument(new LengthRestrictedDocument(2));
 		strengthLevelField.setDocument(new LengthRestrictedDocument(2));
@@ -80,34 +98,57 @@ public class CombatCalcPanel extends JPanel {
 			new ImageIcon(getClass().getClassLoader().getResource("resources/logo_combat.gif")));
 
 		this.add(attackLabel, "cell 0 0");
-		this.add(attackLevelField, "width 10%, height 15%, cell 1 0");
+		this.add(attackLevelField, "width 10%, height 10%, cell 1 0");
 
 		this.add(strengthLabel, "cell 2 0, gapx 10");
-		this.add(strengthLevelField, "width 10%, height 15%, cell 3 0");
+		this.add(strengthLevelField, "width 10%, height 10%, cell 3 0");
 
 		this.add(rangedLabel, "cell 4 0, gapx 10");
-		this.add(rangedLevelField, "width 10%, height 15%, cell 5 0");
+		this.add(rangedLevelField, "width 10%, height 10%, cell 5 0");
 
 		this.add(defenseLabel, "cell 0 1");
-		this.add(defenseLevelField, "width 10%, height 15%, cell 1 1");
+		this.add(defenseLevelField, "width 10%, height 10%, cell 1 1");
 
 		this.add(magicLabel, "cell 2 1, gapx 10");
-		this.add(magicLevelField, "width 10%, height 15%, cell 3 1");
+		this.add(magicLevelField, "width 10%, height 10%, cell 3 1");
 
 		this.add(prayerLabel, "cell 4 1, gapx 10");
-		this.add(prayerLevelField, "width 10%, height 15%, cell 5 1");
+		this.add(prayerLevelField, "width 10%, height 10%, cell 5 1");
 
 		this.add(hitpointsLabel, "cell 0 2");
-		this.add(hitpointsLevelField, "width 10%, height 15%, cell 1 2");
-		this.add(calcButton, "left, cell 2 2, spanx, gapx 10");
-		
-		this.add(combatLabel, "cell 0 3");
-		this.add(combatLevelLabel, "cell 1 3");
-		
+		this.add(hitpointsLevelField, "width 10%, height 10%, cell 1 2");
+		this.add(calcButton, "center, cell 0 3, spanx, gapx 10");
+
+		this.add(combatLabel, "cell 0 4");
+		this.add(combatLevelLabel, "cell 1 4");
+
 		combatLevelLabel.setForeground(Color.white);
 		combatLevelLabel.setFont(new Font(combatLevelLabel.getFont().getName(), Font.BOLD, combatLevelLabel.getFont().getSize()));
 		combatLevelLabel.setFont(new Font(combatLevelLabel.getFont().getName(), Font.PLAIN, 18));
 		combatLevelLabel.setText("126");
-		
+
+	}
+
+	private void setupAnimation() {
+		JTextField[] levelFields = {attackLevelField, strengthLevelField, defenseLevelField,
+		rangedLevelField, magicLevelField, prayerLevelField, hitpointsLevelField};
+		for (JTextField field : levelFields) {
+			final Timeline rolloverTimeline = new Timeline(field);
+			rolloverTimeline.addPropertyToInterpolate("background", attackLevelField.getBackground(), new Color(91, 91, 91));
+			rolloverTimeline.setDuration(150);
+
+			field.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					rolloverTimeline.play();
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					rolloverTimeline.playReverse();
+				}
+			});
+		}
+
 	}
 }
