@@ -7,8 +7,11 @@ package rsclient.panelplugins;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
@@ -21,9 +24,12 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.NumberFormatter;
+import logic.Calculate;
+import logic.RuneScapeAccount;
 import net.miginfocom.swing.MigLayout;
 import org.pushingpixels.trident.Timeline;
 import rsclient.coregui.LengthRestrictedDocument;
+import rsreflection.GameSession;
 
 /**
  *
@@ -37,12 +43,16 @@ public class CombatCalcPanel extends JPanel {
 	JLabel attackLabel, strengthLabel, defenseLabel, rangedLabel,
 		magicLabel, prayerLabel, hitpointsLabel, combatLabel,
 		combatLevelLabel;
+	private ActionListener fireQuery;
 
 	//Used to load a combat calculator into any extendable panel
 	//This calculator should remain fairly resistant to panel size variations. 
 	public CombatCalcPanel() {
 		setup();
 		setupAnimation();
+		setupListeners();
+		
+		calcButton.addActionListener(fireQuery);
 	}
 
 	public void setup() {
@@ -125,8 +135,7 @@ public class CombatCalcPanel extends JPanel {
 		combatLevelLabel.setForeground(Color.white);
 		combatLevelLabel.setFont(new Font(combatLevelLabel.getFont().getName(), Font.BOLD, combatLevelLabel.getFont().getSize()));
 		combatLevelLabel.setFont(new Font(combatLevelLabel.getFont().getName(), Font.PLAIN, 18));
-		combatLevelLabel.setText("126");
-
+		//combatLevelLabel.setText("126");
 	}
 
 	private void setupAnimation() {
@@ -151,4 +160,33 @@ public class CombatCalcPanel extends JPanel {
 		}
 
 	}
+	
+	private void setupListeners() {
+        fireQuery = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Runnable r1 = new Runnable() {
+                    public void run() {
+			   int attackLevel = Integer.parseInt(attackLevelField.getText());
+			   int strengthLevel = Integer.parseInt(strengthLevelField.getText());
+			   int defenseLevel = Integer.parseInt(defenseLevelField.getText());
+			   int prayerLevel = Integer.parseInt(prayerLevelField.getText());
+			   int magicLevel = Integer.parseInt(magicLevelField.getText());
+			   int hitpointsLevel = Integer.parseInt(hitpointsLevelField.getText());
+			   int rangedLevel = Integer.parseInt(rangedLevelField.getText());
+			   double combatLevel = Calculate.calculateCombatLevel(attackLevel, strengthLevel, defenseLevel, prayerLevel, rangedLevel, magicLevel, hitpointsLevel);
+			   combatLevelLabel.setText(Double.toString(combatLevel));
+			   
+			   GameSession g = new GameSession();
+			   System.out.println(g.getSelectedItem());
+		    }
+                };
+                new Thread(r1).start();
+            }
+
+        };
+    }
+	
+	
 }
