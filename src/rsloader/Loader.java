@@ -48,6 +48,9 @@ public class Loader implements AppletStub{
 			applet = (Applet)loader.loadClass(MClass).newInstance();
 			applet.setStub(this);
 			applet.init();
+                        applet.setLayout(null);
+                        applet.setBounds(0, 0, 765, 503);
+                        applet.resize(765, 503);
 			applet.start();
 		} catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
 			e1.printStackTrace();

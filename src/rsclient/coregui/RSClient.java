@@ -108,10 +108,7 @@ public class RSClient {
 				final Loader loader = new Loader(Game.OSRS);
 				gamepanel.add(l, "width 765, height 503, cell 0 0");
 				gamepanel.add(loader.applet, "width 765, height 503, dock north");
-				loader.applet.setLayout(null);
-				loader.applet.setBounds(0, 0, 765, 503);
 				gamepanel.remove(l);
-				loader.applet.resize(765, 503);
 				reflector = loader.loader;
 
 			} catch (IllegalArgumentException ex) {
