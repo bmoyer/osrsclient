@@ -48,21 +48,30 @@ public class RuneScapeAccount {
             in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
             String inputLine;
             int c = 0;
+            int totalLevel = 0;
+            int totalExp = 0;
             while ((inputLine = in.readLine()) != null) {
                 String[] tokens = inputLine.split(",");
                 if (tokens.length == 3) {
                     RuneScapeLevel level = new RuneScapeLevel(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
                     if (c <= skillNames.length) {
                         hiscores.put(skillNames[c], level);
+                        totalLevel += level.level;
+                        totalExp += level.experience;     
                     }
                     c++;
                 }
             }
             RuneScapeLevel combatLevel = new RuneScapeLevel(0, (int) getCombatLevel(), 0);
             hiscores.put("combat", combatLevel);
+            if(hiscores.get("overall").level == 0){ //will be 0 if player is unranked
+                hiscores.get("overall").level = totalLevel;
+                hiscores.get("overall").experience = totalExp;
+            }
             isValidAccount = true;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+            isValidAccount = false;
         } finally {
             if (in != null) {
                 in.close();

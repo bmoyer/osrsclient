@@ -84,8 +84,6 @@ public class RSClient {
 		mainpanel.add(bottompanel, "height 200, width 765,cell 0 1, growy, spany ");
 		mainpanel.add(sidepanel, "width 250, height 503, cell 1 0,growy, spany ");
 
-		mainpanel.setVisible(true);
-		mainwnd.pack();
 		mainwnd.setVisible(true);
 
 		mainwnd.pack();
