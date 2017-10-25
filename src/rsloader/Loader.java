@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JPanel;
 import rsreflection.Reflector;
 
 /***
@@ -32,7 +33,7 @@ public class Loader implements AppletStub{
 	public String MClass;
 	public Reflector loader;
         
-	public Loader(Game g)
+	public Loader(Game g, JPanel gamepanel)
 	{
 		game = g;
 		if(game == Game.OSRS)
@@ -49,8 +50,8 @@ public class Loader implements AppletStub{
 			applet.setStub(this);
 			applet.init();
                         applet.setLayout(null);
-                        applet.setBounds(0, 0, 765, 503);
-                        applet.resize(765, 503);
+                        //applet.setBounds(0, 0, 765, 503);
+                        applet.resize(gamepanel.getSize());
 			applet.start();
 		} catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
 			e1.printStackTrace();
