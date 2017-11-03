@@ -65,20 +65,27 @@ public class HiscoresPanel extends JPanel implements StatRolloverListener {
         int levelInt = account.hiscores.get(skill).level;
         int rankInt = account.hiscores.get(skill).rank;
         int experienceInt = account.hiscores.get(skill).experience;
+        
+        if(levelInt == 99){
+            while(experienceInt > Calculate.xpForLevel(levelInt + 1)){
+                levelInt++;
+            }
+        } 
+        
         String rankStr = NumberFormat.getIntegerInstance().format(rankInt);
         String experienceStr = NumberFormat.getIntegerInstance().format(experienceInt);
         if (rankInt < 0){
             rankStr = "Unranked";
         }
         if (!skill.equalsIgnoreCase("combat") && !skill.equalsIgnoreCase("overall")) {
-            Integer x = Calculate.xpForLevel(levelInt + 1) - experienceInt;
+            Integer x = Math.min(Calculate.xpForLevel(levelInt + 1), 200000000) - experienceInt;
             String xptl = NumberFormat.getIntegerInstance().format(x);
 
             //calculates the percentage of the way to the next level,
             //with 0% being 0 xp past the user's current level.
             double progressToLevel
                     = ((double) experienceInt - (double) Calculate.xpForLevel(levelInt))
-                    / ((double) Calculate.xpForLevel(levelInt + 1) - (double) Calculate.xpForLevel(levelInt));
+                    / (Math.min((double) Calculate.xpForLevel(levelInt + 1), 200000000) - (double) Calculate.xpForLevel(levelInt));
 
             levelInfoPanel.setInfo(capitalizedSkill, rankStr, experienceStr, xptl, (int) (progressToLevel * 100));
 

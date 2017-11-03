@@ -18,11 +18,6 @@ public class ToolBarButton extends JButton {
     public ToolBarButton(String text){
         
         super(text);
-	/*setFont(new Font("Liberation Sans", Font.PLAIN, 11));
-        setContentAreaFilled(false);
-        setContentAreaFilled(false);
-        setBackground(Color.black);
-        setForeground(Color.white);
-                */
+        
     }
 }

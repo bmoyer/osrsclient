@@ -22,7 +22,7 @@ public class SidePane extends JTabbedPane {
 
     public SidePane() {
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        //setBackground(Color.black);
+
         ImageIcon statsicon = new ImageIcon(
                 getClass().getClassLoader().getResource("resources/statsicon.png"));
 

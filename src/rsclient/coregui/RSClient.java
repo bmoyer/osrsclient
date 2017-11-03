@@ -66,7 +66,6 @@ public class RSClient {
 		mainwnd.getContentPane().add(mainpanel);
 		JPanel gamepanel = new JPanel(new MigLayout(" gap 0, ins 0 "));
 		gamepanel.setBackground(Color.gray);
-		//gamepanel.setSize(765, 503);
 
 		boolean debug = false;
 
@@ -79,8 +78,8 @@ public class RSClient {
 		sidepanel.setBackground(Color.black);
 		bottompanel.setBackground(Color.black);
 
-                sidepanel.add(new SidePane(), "width 250, height 503, cell 0 0, spany, push, growy");
-		bottompanel.add(new BottomPane(), "height 200, width 765, cell 0 0,spanx, push, growx ");
+                sidepanel.add(new SidePane(), "width 250:250, height 503, cell 0 0, spany, push, growy");
+		bottompanel.add(new BottomPane(), "height 200:200, width 765, cell 0 0,spanx, push, growx ");
 		mainpanel.add(sidepanel, "width 250, height 503, cell 1 0,growy, spany, dock east ");
 		mainpanel.add(bottompanel, "height 200, width 765,cell 0 1, growx, dock south");
 
@@ -108,7 +107,7 @@ public class RSClient {
 				gamepanel.add(loader.applet, "width 765:765, height 503:503, dock center, growx, growy, push");
 				gamepanel.remove(l);
 				reflector = loader.loader;
-
+                                
 			} catch (IllegalArgumentException ex) {
 				Logger.getLogger(RSClient.class.getName()).log(Level.SEVERE, null, ex);
 

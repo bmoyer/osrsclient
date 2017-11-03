@@ -134,8 +134,6 @@ public class geGuidePanel extends JPanel {
             String[] tokens = inputLine.split("[>*<*]");
             for(int i = 0; i < tokens.length; i++) {
                 if(tokens[i].contains("Price:")){
-                   //System.out.print(tokens[i]+ " ");
-                   //System.out.println(tokens[i + 4]);
                    priceLabel.setText("PRICE: " + tokens[i+4]);
                    
                 }
@@ -162,7 +160,6 @@ public class geGuidePanel extends JPanel {
         isValidItem = true;
         }
         catch(Exception e){
-            //e.printStackTrace();
             isValidItem = false;
         } finally {
             if (in != null) {
@@ -180,7 +177,7 @@ public class geGuidePanel extends JPanel {
                         @Override
                         public void run() {
                             try {
-                               // itemLabel.setText("loading..");
+                                itemLabel.setText("loading..");
                                 loadInfo(itemName);
                             } catch (IOException e) {
                                 //e.printStackTrace();

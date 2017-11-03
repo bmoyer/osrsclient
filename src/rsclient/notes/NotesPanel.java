@@ -44,11 +44,8 @@ public class NotesPanel extends JPanel {
         notewindow.setBackground(new Color(221, 221, 221));
         notewindow.setFont(notewindow.getFont().deriveFont(initFontSize));
         add(scrollPane, "height 200, width 200, dock center");
-	//add(new CombatCalcPanel(), "height 200, width 200");
         increaseFontSize.addActionListener(new AddListener());
         decreaseFontSize.addActionListener(new SubListener());
-       // add(increaseFontSize);
-        //add(decreaseFontSize);
         add(buttonsPanel, "growy");
         
     }
