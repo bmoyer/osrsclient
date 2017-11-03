@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import logic.RuneScapeAccount;
 import net.miginfocom.swing.MigLayout;
 import rsclient.coregui.Style;
+import logic.Calculate;
 
 /**
  *
@@ -49,7 +50,19 @@ public class LevelScorePanel extends JPanel implements MouseListener {
     }
     
     public void updateLevelStat(RuneScapeAccount account){
-        skillLevelLabel.setText("" + account.hiscores.get(skill).level);
+        int level = account.hiscores.get(skill).level;
+        if(level == 99){
+            int exp = account.hiscores.get(skill).experience;
+            if(exp == 200000000) {
+                skillLevelLabel.setText("MAX");
+                return;
+            }
+            while(exp > Calculate.xpForLevel(level + 1)){
+                level++;
+            }
+        } 
+        skillLevelLabel.setText("" + level);
+        
     }
     
     public void nullLevelStat(){
@@ -83,18 +96,12 @@ public class LevelScorePanel extends JPanel implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mouseClicked(MouseEvent me) {}
 
     @Override
-    public void mousePressed(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mousePressed(MouseEvent me) {}
 
     @Override
-    public void mouseReleased(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mouseReleased(MouseEvent me) {}
 
 }

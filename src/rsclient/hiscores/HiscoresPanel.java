@@ -41,7 +41,8 @@ public class HiscoresPanel extends JPanel implements StatRolloverListener {
     private ActionListener fireQuery;
 
     public HiscoresPanel() {
-
+        account =  new RuneScapeAccount("");
+        
         setup();
         setupListeners();
         setupAnimation();
@@ -53,33 +54,43 @@ public class HiscoresPanel extends JPanel implements StatRolloverListener {
 
     @Override
     public void onRolledOver(LevelScorePanel skillPanel) {
+        
+        if(!account.isValidAccount()){
+            return;
+        }
 
         String skill = skillPanel.getSkill();
 
+        String capitalizedSkill = Character.toUpperCase(skill.charAt(0)) + skill.substring(1);
+        int levelInt = account.hiscores.get(skill).level;
+        int rankInt = account.hiscores.get(skill).rank;
+        int experienceInt = account.hiscores.get(skill).experience;
+        
+        if(levelInt == 99){
+            while(experienceInt > Calculate.xpForLevel(levelInt + 1)){
+                levelInt++;
+            }
+        } 
+        
+        String rankStr = NumberFormat.getIntegerInstance().format(rankInt);
+        String experienceStr = NumberFormat.getIntegerInstance().format(experienceInt);
+        if (rankInt < 0){
+            rankStr = "Unranked";
+        }
         if (!skill.equalsIgnoreCase("combat") && !skill.equalsIgnoreCase("overall")) {
-
-            String capitalizedSkill = Character.toUpperCase(skill.charAt(0)) + skill.substring(1);
-
-            String rank = NumberFormat.getIntegerInstance().format(account.hiscores.get(skill).rank);
-            String experience = NumberFormat.getIntegerInstance().format(account.hiscores.get(skill).experience);
-
-            Integer x = Calculate.xpForLevel(account.hiscores.get(skill).level + 1) - account.hiscores.get(skill).experience;
+            Integer x = Math.min(Calculate.xpForLevel(levelInt + 1), 200000000) - experienceInt;
             String xptl = NumberFormat.getIntegerInstance().format(x);
 
             //calculates the percentage of the way to the next level,
             //with 0% being 0 xp past the user's current level.
             double progressToLevel
-                    = ((double) account.hiscores.get(skill).experience - (double) Calculate.xpForLevel(account.hiscores.get(skill).level))
-                    / ((double) Calculate.xpForLevel(account.hiscores.get(skill).level + 1) - (double) Calculate.xpForLevel(account.hiscores.get(skill).level));
+                    = ((double) experienceInt - (double) Calculate.xpForLevel(levelInt))
+                    / (Math.min((double) Calculate.xpForLevel(levelInt + 1), 200000000) - (double) Calculate.xpForLevel(levelInt));
 
-            levelInfoPanel.setInfo(capitalizedSkill, rank, experience, xptl, (int) (progressToLevel * 100));
+            levelInfoPanel.setInfo(capitalizedSkill, rankStr, experienceStr, xptl, (int) (progressToLevel * 100));
 
         } else if (skill.equalsIgnoreCase("overall")) {
-            String capitalizedSkill = Character.toUpperCase(skill.charAt(0)) + skill.substring(1);
-            String rank = NumberFormat.getIntegerInstance().format(account.hiscores.get(skill).rank);
-            String experience = NumberFormat.getIntegerInstance().format(account.hiscores.get(skill).experience);
-            levelInfoPanel.setInfo(capitalizedSkill, rank, experience, "", 0);
-
+            levelInfoPanel.setInfo(capitalizedSkill, rankStr, experienceStr, "", 0);
         } else {
             levelInfoPanel.setInfo("", "", "", "", 0);
         }
@@ -93,9 +104,10 @@ public class HiscoresPanel extends JPanel implements StatRolloverListener {
 
     private void setup() {
         this.setLayout(new MigLayout("ins 5,center"));
+        this.setBackground(Color.BLACK);
         usernameField = new JTextField();
         usernameField.setDocument(new LengthRestrictedDocument(12));
-        usernameField.setBackground(new Color(51, 51, 51));
+        usernameField.setBackground(new Color(101, 101, 101));
         usernameField.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
         xpDisplay = new JLabel();
@@ -124,7 +136,7 @@ public class HiscoresPanel extends JPanel implements StatRolloverListener {
 
     private void setupAnimation() {
         rolloverTimeline = new Timeline(usernameField);
-        rolloverTimeline.addPropertyToInterpolate("background", usernameField.getBackground(), new Color(91, 91, 91));
+        rolloverTimeline.addPropertyToInterpolate("background", usernameField.getBackground(), new Color(121, 121, 121));
         rolloverTimeline.setDuration(150);
         
         usernameField.addMouseListener(new MouseAdapter() {
@@ -153,16 +165,14 @@ public class HiscoresPanel extends JPanel implements StatRolloverListener {
                         try {
                             rsnLabel.setText("loading...");
                             account.loadStats();
-                        } catch (IOException ex) {
-                            rsnLabel.setText("none");
-                            levelsDisplayPanel.nullLevels();
-                        } finally {
+                        } catch (IOException ex) {}
+                        if(account.isValidAccount()){
                             rsnLabel.setText("RSN:");
-                        }
-                        if (!account.isValidAccount()) {
+                            levelsDisplayPanel.updateLevels(account);
+                        } else {
+                            rsnLabel.setText("INVALID:");
                             levelsDisplayPanel.nullLevels();
                         }
-                        levelsDisplayPanel.updateLevels(account);
                     }
                 };
                 new Thread(r1).start();

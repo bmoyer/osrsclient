@@ -101,14 +101,10 @@ public class MarketPanel extends JPanel implements ItemListingRolloverListener {
     }
 
     @Override
-    public void onRolledOver(ItemResultPanel itemPanel) {
-        //
-    }
+    public void onRolledOver(ItemResultPanel itemPanel) {}
 
     @Override
-    public void onRolledOff(ItemResultPanel itemPanel) {
-        //
-    }
+    public void onRolledOff(ItemResultPanel itemPanel) {}
 
     //Clicking ItemResultPanel calls a function in ItemListPanel which calls
     //this function.  This function populates the grid of offers for a given item.

@@ -93,14 +93,10 @@ public class ItemListPanel extends JPanel implements ItemListingRolloverListener
     }
 
     @Override
-    public void onRolledOver(ItemResultPanel itemPanel) {
-        //rolloverListener.onRolledOver(itemPanel);
-    }
+    public void onRolledOver(ItemResultPanel itemPanel) {}
 
     @Override
-    public void onRolledOff(ItemResultPanel itemPanel) {
-        //rolloverListener.onRolledOff(itemPanel);
-    }
+    public void onRolledOff(ItemResultPanel itemPanel) {}
 
     @Override
     public void onClicked(ItemResultPanel itemPanel) {

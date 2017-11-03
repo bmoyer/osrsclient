@@ -5,11 +5,13 @@
  */
 package rsclient.coregui;
 
+import java.awt.Color;
 import rsclient.hiscores.HiscoresPanel;
 import rsclient.market.MarketPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import rsclient.geguide.geGuidePanel;
 import rsclient.panelplugins.BasePluginPanel;
 
 /**
@@ -37,7 +39,7 @@ public class SidePane extends JTabbedPane {
 
         addTab(null, shopicon, new MarketPanel());
 
-        addTab(null, graphicon, new JPanel());
+        addTab(null, graphicon, new geGuidePanel());
 
         addTab(null, toolsicon, new BasePluginPanel());
 

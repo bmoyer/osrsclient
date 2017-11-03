@@ -58,20 +58,19 @@ public class RSClient {
     
 		mainwnd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel mainpanel = new JPanel(new MigLayout("fill, insets 10"));
+		JPanel mainpanel = new JPanel(new MigLayout("fill, insets 5"));
 		mainpanel.setBackground(Color.black);
 		mainpanel.add(toolbar, "dock north, growx, gap 0");
 		toolbar.setVisible(true);
 
 		mainwnd.getContentPane().add(mainpanel);
-		JPanel gamepanel = new JPanel(new MigLayout(" gap 0, ins 0,"));
+		JPanel gamepanel = new JPanel(new MigLayout(" gap 0, ins 0 "));
 		gamepanel.setBackground(Color.gray);
-		gamepanel.setSize(765, 503);
 
 		boolean debug = false;
 
 		gamepanel.setVisible(true);
-		mainpanel.add(gamepanel, "height 503:503:503,width 765:765:765, cell 0 0, grow 0");
+		mainpanel.add(gamepanel, "height 503:503,width 765:765, cell 0 0, growx, growy"); //height 503:503:503,width 765:765:765,
 		gamepanel.setVisible(true);
 
 		JPanel sidepanel = new JPanel(new MigLayout("ins 0"));
@@ -79,13 +78,12 @@ public class RSClient {
 		sidepanel.setBackground(Color.black);
 		bottompanel.setBackground(Color.black);
 
-		bottompanel.add(new BottomPane(), "height 200, width 765, cell 0 0,spanx, push, growx ");
-		sidepanel.add(new SidePane(), "width 250, height 503, cell 0 0, spany,push, growy");
-		mainpanel.add(bottompanel, "height 200, width 765,cell 0 1, growy, spany ");
-		mainpanel.add(sidepanel, "width 250, height 503, cell 1 0,growy, spany ");
+                sidepanel.add(new SidePane(), "width 250:250, height 503, cell 0 0, spany, push, growy");
+		bottompanel.add(new BottomPane(), "height 200:200, width 765, cell 0 0,spanx, push, growx ");
+		mainpanel.add(sidepanel, "width 250, height 503, cell 1 0,growy, spany, dock east ");
+		mainpanel.add(bottompanel, "height 200, width 765,cell 0 1, growx, dock south");
 
-		mainpanel.setVisible(true);
-		mainwnd.pack();
+
 		mainwnd.setVisible(true);
 
 		mainwnd.pack();
@@ -104,16 +102,12 @@ public class RSClient {
 		if (!debug) {
 			try {
 				LoadingPanel l = new LoadingPanel();
-
-				final Loader loader = new Loader(Game.OSRS);
-				gamepanel.add(l, "width 765, height 503, cell 0 0");
-				gamepanel.add(loader.applet, "width 765, height 503, dock north");
-				loader.applet.setLayout(null);
-				loader.applet.setBounds(0, 0, 765, 503);
+				gamepanel.add(l, "width 765:765, height 503:503, cell 0 0, growx, growy, push");
+				final Loader loader = new Loader(Game.OSRS, gamepanel);
+				gamepanel.add(loader.applet, "width 765:765, height 503:503, dock center, growx, growy, push");
 				gamepanel.remove(l);
-				loader.applet.resize(765, 503);
 				reflector = loader.loader;
-
+                                
 			} catch (IllegalArgumentException ex) {
 				Logger.getLogger(RSClient.class.getName()).log(Level.SEVERE, null, ex);
 

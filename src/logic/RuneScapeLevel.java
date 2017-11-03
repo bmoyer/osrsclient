@@ -20,6 +20,9 @@ public class RuneScapeLevel {
         level = l;
         experience = e;
         rank = r;
+        if (experience < 0){ //unstarted levels are listed as -1 xp from the website
+            experience = 0;
+        }
         
     }
 }

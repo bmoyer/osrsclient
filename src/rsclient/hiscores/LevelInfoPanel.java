@@ -16,6 +16,7 @@ import javax.swing.JProgressBar;
 import javax.swing.border.EtchedBorder;
 import net.miginfocom.swing.MigLayout;
 import org.pushingpixels.trident.Timeline;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 /**
  *
@@ -96,8 +97,11 @@ public class LevelInfoPanel extends JPanel {
         xp.setForeground(Color.white);
         xpToLevel.setForeground(Color.white);
         
-       xpToLevelBar.setForeground(Color.white);
-
+       xpToLevelBar.setForeground(Color.green);
+       xpToLevelBar.setBackground(Color.red);
+       xpToLevelBar.setBorder(BorderFactory.createLineBorder(Color.black));
+       xpToLevelBar.setUI(new BasicProgressBarUI());
+       
         add(skillLabel, "cell 0 0,spanx ");
         add(rankLabel, "cell 0 1,spanx ");
         add(xpLabel, "cell 0 2, gap 0,spanx");

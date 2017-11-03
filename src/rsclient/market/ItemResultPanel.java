@@ -131,14 +131,10 @@ public class ItemResultPanel extends JPanel implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent me) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mousePressed(MouseEvent me) {}
 
     @Override
-    public void mouseReleased(MouseEvent me) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void mouseReleased(MouseEvent me) {}
 
     @Override
     public void mouseEntered(MouseEvent me) {
